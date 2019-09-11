@@ -37,7 +37,7 @@ namespace Recode.Service.EntityService
 
         public async Task<RoleModel[]> GetAll()
         {
-            var roles = _roleQueryRepo.GetAll().ToList();
+            var roles = _roleQueryRepo.GetAll().ToArray();
 
             return _mapper.Map<RoleModel[]>(roles);
         }

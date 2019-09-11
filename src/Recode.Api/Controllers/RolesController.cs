@@ -14,7 +14,6 @@ using Recode.Core.Interfaces.Services;
 
 namespace Recode.Api.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RolesController : BaseApiController

@@ -51,8 +51,10 @@ namespace Recode.Api.Extensions
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEmailSendingJob, EmailSendingJob>();
             services.AddScoped<IAuditLogService, AuditLogService>();
+
             services.AddScoped<ISSOService, SSOService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ICompanyService, CompanyService>();
 
             // Managers
             services.AddScoped<IAuthService, AuthService>();

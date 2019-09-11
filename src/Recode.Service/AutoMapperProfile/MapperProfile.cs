@@ -16,12 +16,10 @@ namespace Recode.Service.AutoMapperProfile
             {
                 if(src.UserRoles != null)
                 {
-                    dest.Roles = src.UserRoles.Select(x => new RoleModel { Id = x.Role.Id, Name = x.Role.RoleName, Description = x.Role.Description }).ToArray();
+                    dest.Roles = src.UserRoles.Select(x => new RoleModel { Id = x.Role.Id, RoleName = x.Role.RoleName, Description = x.Role.Description }).ToArray();
                 }
             });
-
-            CreateMap<Role, RoleModel>().ReverseMap();
-
+            
             CreateMap<EmailLog, EmailLogModel>().ReverseMap();
             CreateMap<Company, BusinessModel>(MemberList.Source).ReverseMap();
         }

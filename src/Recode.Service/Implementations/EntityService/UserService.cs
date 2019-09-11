@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Recode.Core.ConfigModels;
+using Recode.Core.Interfaces.Managers;
 using Recode.Core.Interfaces.Services;
 using Recode.Core.Models;
 using Recode.Data.AppEntity;
