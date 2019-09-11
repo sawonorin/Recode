@@ -14,5 +14,7 @@ namespace Recode.Data.AppEntity
         public string Name { get; set; }
         [MaxLength(250)]
         public string Description { get; set; }        
+        public Department Department { get; set; }
+        public ICollection<Candidate> Candidates { get; set; }
     }
 }

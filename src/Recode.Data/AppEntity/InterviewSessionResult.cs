@@ -11,10 +11,8 @@ namespace Recode.Data.AppEntity
     {
         public long CandidateId { get; set; }
         public Candidate Candidate { get; set; }
-        public long InterviewSessionId { get; set; }
-        public InterviewSession InterviewSession { get; set; }
-        public long MetricId { get; set; }
-        public Metric Metric { get; set; }
+        public long InterviewSessionMetricId { get; set; }
+        public InterviewSessionMetric InterviewSessionMetric { get; set; }
         public int Rating { get; set; }
         [MaxLength(400)]
         public string Remark { get; set; }

@@ -11,6 +11,6 @@ namespace Recode.Data.AppEntity
         public long CandidateId { get; set; }
         public Candidate Candidate { get; set; }
         public long InterviewSessionId { get; set; }
-        public InterviewSession InterviewSession { get; set; }
+        //public InterviewSession InterviewSession { get; set; }
     }
 }

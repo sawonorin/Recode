@@ -68,7 +68,6 @@ namespace Recode.Data
             builder.Entity<JobRole>().HasIndex(x => x.DepartmentId);
             builder.Entity<Candidate>().HasIndex(x => x.CompanyId);
             builder.Entity<InterviewSession>().HasIndex(x => x.CompanyId);
-            builder.Entity<InterviewSession>().HasIndex(x => x.DepartmentId);
             builder.Entity<InterviewSession>().HasIndex(x => x.JobRoleId);
             builder.Entity<InterviewSession>().HasIndex(x => x.RecruiterId);
             builder.Entity<InterviewSessionCandidate>().HasIndex(x => x.CandidateId);
@@ -78,9 +77,9 @@ namespace Recode.Data
             builder.Entity<Metric>().HasIndex(x => x.CompanyId);
             builder.Entity<InterviewSessionInterviewer>().HasIndex(x => x.InterviewSessionId);
             builder.Entity<InterviewSessionInterviewer>().HasIndex(x => x.InterviewerId);
-            builder.Entity<InterviewSessionResult>().HasIndex(x => x.InterviewSessionId);
             builder.Entity<InterviewSessionResult>().HasIndex(x => x.CandidateId);
-            builder.Entity<InterviewSessionResult>().HasIndex(x => x.MetricId);
+
+
 
             SeedRoles(builder);
         }

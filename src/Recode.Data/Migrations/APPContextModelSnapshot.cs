@@ -46,7 +46,7 @@ namespace Recode.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<long>("JobRoleId");
+                    b.Property<long?>("JobRoleId");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(50);
@@ -181,8 +181,6 @@ namespace Recode.Data.Migrations
 
                     b.Property<DateTimeOffset>("DateCreated");
 
-                    b.Property<long>("DepartmentId");
-
                     b.Property<DateTime>("EndTime");
 
                     b.Property<bool>("IsActive");
@@ -197,13 +195,11 @@ namespace Recode.Data.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<long>("VenueId");
+                    b.Property<long?>("VenueId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("JobRoleId");
 
@@ -311,13 +307,11 @@ namespace Recode.Data.Migrations
 
                     b.Property<DateTimeOffset>("DateCreated");
 
-                    b.Property<long>("InterviewSessionId");
+                    b.Property<long>("InterviewSessionMetricId");
 
                     b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<long>("MetricId");
 
                     b.Property<int>("Rating");
 
@@ -328,9 +322,7 @@ namespace Recode.Data.Migrations
 
                     b.HasIndex("CandidateId");
 
-                    b.HasIndex("InterviewSessionId");
-
-                    b.HasIndex("MetricId");
+                    b.HasIndex("InterviewSessionMetricId");
 
                     b.ToTable("InterviewSessionResults");
                 });
@@ -416,11 +408,11 @@ namespace Recode.Data.Migrations
 
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasMaxLength(10);
+                        .HasMaxLength(20);
 
                     b.Property<string>("RoleType")
                         .IsRequired()
-                        .HasMaxLength(10);
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -431,7 +423,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 1L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 319, DateTimeKind.Unspecified).AddTicks(8813), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 662, DateTimeKind.Unspecified).AddTicks(8985), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "VGG_Admin",
@@ -441,7 +433,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 2L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 320, DateTimeKind.Unspecified).AddTicks(1085), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 663, DateTimeKind.Unspecified).AddTicks(1156), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "CompanyAdmin",
@@ -451,7 +443,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 3L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 320, DateTimeKind.Unspecified).AddTicks(1101), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 663, DateTimeKind.Unspecified).AddTicks(1173), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "Interviewer",
@@ -461,7 +453,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 4L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 320, DateTimeKind.Unspecified).AddTicks(1103), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 663, DateTimeKind.Unspecified).AddTicks(1175), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "Recruiter",
@@ -582,18 +574,12 @@ namespace Recode.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Recode.Data.AppEntity.JobRole", "JobRole")
-                        .WithMany()
-                        .HasForeignKey("JobRoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("Candidates")
+                        .HasForeignKey("JobRoleId");
                 });
 
             modelBuilder.Entity("Recode.Data.AppEntity.InterviewSession", b =>
                 {
-                    b.HasOne("Recode.Data.AppEntity.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Recode.Data.AppEntity.JobRole", "JobRole")
                         .WithMany()
                         .HasForeignKey("JobRoleId")
@@ -606,8 +592,7 @@ namespace Recode.Data.Migrations
 
                     b.HasOne("Recode.Data.AppEntity.Venue", "Venue")
                         .WithMany()
-                        .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("VenueId");
                 });
 
             modelBuilder.Entity("Recode.Data.AppEntity.InterviewSessionCandidate", b =>
@@ -616,20 +601,10 @@ namespace Recode.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CandidateId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Recode.Data.AppEntity.InterviewSession", "InterviewSession")
-                        .WithMany()
-                        .HasForeignKey("InterviewSessionId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Recode.Data.AppEntity.InterviewSessionInterviewer", b =>
                 {
-                    b.HasOne("Recode.Data.AppEntity.InterviewSession", "InterviewSession")
-                        .WithMany()
-                        .HasForeignKey("InterviewSessionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Recode.Data.AppEntity.User", "Interviewer")
                         .WithMany()
                         .HasForeignKey("InterviewerId")
@@ -638,11 +613,6 @@ namespace Recode.Data.Migrations
 
             modelBuilder.Entity("Recode.Data.AppEntity.InterviewSessionMetric", b =>
                 {
-                    b.HasOne("Recode.Data.AppEntity.InterviewSession", "InterviewSession")
-                        .WithMany()
-                        .HasForeignKey("InterviewSessionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Recode.Data.AppEntity.Metric", "Metric")
                         .WithMany()
                         .HasForeignKey("MetricId")
@@ -656,20 +626,15 @@ namespace Recode.Data.Migrations
                         .HasForeignKey("CandidateId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Recode.Data.AppEntity.InterviewSession", "InterviewSession")
+                    b.HasOne("Recode.Data.AppEntity.InterviewSessionMetric", "InterviewSessionMetric")
                         .WithMany()
-                        .HasForeignKey("InterviewSessionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Recode.Data.AppEntity.Metric", "Metric")
-                        .WithMany()
-                        .HasForeignKey("MetricId")
+                        .HasForeignKey("InterviewSessionMetricId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Recode.Data.AppEntity.JobRole", b =>
                 {
-                    b.HasOne("Recode.Data.AppEntity.Department")
+                    b.HasOne("Recode.Data.AppEntity.Department", "Department")
                         .WithMany("JobRoles")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade);

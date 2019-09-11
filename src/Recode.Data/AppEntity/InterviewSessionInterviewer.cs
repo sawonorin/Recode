@@ -12,6 +12,6 @@ namespace Recode.Data.AppEntity
         [ForeignKey("InterviewerId")]
         public User Interviewer{ get; set; }
         public long InterviewSessionId { get; set; }
-        public InterviewSession InterviewSession { get; set; }
+       // public InterviewSession InterviewSession { get; set; }
     }
 }

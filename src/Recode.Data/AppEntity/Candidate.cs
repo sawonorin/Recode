@@ -16,7 +16,7 @@ namespace Recode.Data.AppEntity
         }
 
         public long CompanyId { get; set; }
-        public long JobRoleId { get; set; }
+        public long? JobRoleId { get; set; }
         public JobRole JobRole { get; set; }
         public long DepartmentId { get; set; }
         public Department Department { get; set; }

@@ -11,6 +11,6 @@ namespace Recode.Data.AppEntity
         public long MetricId { get; set; }
         public Metric Metric { get; set; }
         public long InterviewSessionId { get; set; }
-        public InterviewSession InterviewSession { get; set; }
+        //public InterviewSession InterviewSession { get; set; }
     }
 }

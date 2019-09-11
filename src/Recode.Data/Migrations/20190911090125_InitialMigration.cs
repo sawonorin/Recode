@@ -101,8 +101,8 @@ namespace Recode.Data.Migrations
                     IsDeleted = table.Column<bool>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     CreateById = table.Column<string>(nullable: false),
-                    RoleName = table.Column<string>(maxLength: 10, nullable: false),
-                    RoleType = table.Column<string>(maxLength: 10, nullable: false),
+                    RoleName = table.Column<string>(maxLength: 20, nullable: false),
+                    RoleType = table.Column<string>(maxLength: 20, nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -179,6 +179,54 @@ namespace Recode.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InterviewSessionMetrics",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    CreateById = table.Column<string>(nullable: false),
+                    MetricId = table.Column<long>(nullable: false),
+                    InterviewSessionId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InterviewSessionMetrics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InterviewSessionMetrics_Metrics_MetricId",
+                        column: x => x.MetricId,
+                        principalTable: "Metrics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InterviewSessionInterviewers",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    CreateById = table.Column<string>(nullable: false),
+                    InterviewerId = table.Column<long>(nullable: false),
+                    InterviewSessionId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InterviewSessionInterviewers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InterviewSessionInterviewers_Users_InterviewerId",
+                        column: x => x.InterviewerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 columns: table => new
                 {
@@ -219,7 +267,7 @@ namespace Recode.Data.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     CreateById = table.Column<string>(nullable: false),
                     CompanyId = table.Column<long>(nullable: false),
-                    JobRoleId = table.Column<long>(nullable: false),
+                    JobRoleId = table.Column<long>(nullable: true),
                     DepartmentId = table.Column<long>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 50, nullable: true),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
@@ -242,7 +290,7 @@ namespace Recode.Data.Migrations
                         column: x => x.JobRoleId,
                         principalTable: "JobRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -256,23 +304,16 @@ namespace Recode.Data.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     CreateById = table.Column<string>(nullable: false),
                     CompanyId = table.Column<long>(nullable: false),
-                    DepartmentId = table.Column<long>(nullable: false),
                     JobRoleId = table.Column<long>(nullable: false),
                     RecruiterId = table.Column<long>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    VenueId = table.Column<long>(nullable: false),
+                    VenueId = table.Column<long>(nullable: true),
                     StartTime = table.Column<DateTime>(nullable: false),
                     EndTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InterviewSessions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InterviewSessions_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_InterviewSessions_JobRoles_JobRoleId",
                         column: x => x.JobRoleId,
@@ -290,7 +331,7 @@ namespace Recode.Data.Migrations
                         column: x => x.VenueId,
                         principalTable: "Venues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -315,72 +356,6 @@ namespace Recode.Data.Migrations
                         principalTable: "Candidates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InterviewSessionCandidates_InterviewSessions_InterviewSessionId",
-                        column: x => x.InterviewSessionId,
-                        principalTable: "InterviewSessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InterviewSessionInterviewers",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    CreateById = table.Column<string>(nullable: false),
-                    InterviewerId = table.Column<long>(nullable: false),
-                    InterviewSessionId = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InterviewSessionInterviewers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InterviewSessionInterviewers_InterviewSessions_InterviewSessionId",
-                        column: x => x.InterviewSessionId,
-                        principalTable: "InterviewSessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InterviewSessionInterviewers_Users_InterviewerId",
-                        column: x => x.InterviewerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InterviewSessionMetrics",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    CreateById = table.Column<string>(nullable: false),
-                    MetricId = table.Column<long>(nullable: false),
-                    InterviewSessionId = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InterviewSessionMetrics", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InterviewSessionMetrics_InterviewSessions_InterviewSessionId",
-                        column: x => x.InterviewSessionId,
-                        principalTable: "InterviewSessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InterviewSessionMetrics_Metrics_MetricId",
-                        column: x => x.MetricId,
-                        principalTable: "Metrics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -394,8 +369,7 @@ namespace Recode.Data.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     CreateById = table.Column<string>(nullable: false),
                     CandidateId = table.Column<long>(nullable: false),
-                    InterviewSessionId = table.Column<long>(nullable: false),
-                    MetricId = table.Column<long>(nullable: false),
+                    InterviewSessionMetricId = table.Column<long>(nullable: false),
                     Rating = table.Column<int>(nullable: false),
                     Remark = table.Column<string>(maxLength: 400, nullable: true)
                 },
@@ -409,15 +383,9 @@ namespace Recode.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InterviewSessionResults_InterviewSessions_InterviewSessionId",
-                        column: x => x.InterviewSessionId,
-                        principalTable: "InterviewSessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InterviewSessionResults_Metrics_MetricId",
-                        column: x => x.MetricId,
-                        principalTable: "Metrics",
+                        name: "FK_InterviewSessionResults_InterviewSessionMetrics_InterviewSessionMetricId",
+                        column: x => x.InterviewSessionMetricId,
+                        principalTable: "InterviewSessionMetrics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -427,10 +395,10 @@ namespace Recode.Data.Migrations
                 columns: new[] { "Id", "CreateById", "DateCreated", "Description", "IsActive", "IsDeleted", "RoleName", "RoleType" },
                 values: new object[,]
                 {
-                    { 1L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 319, DateTimeKind.Unspecified).AddTicks(8813), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "VGG_Admin", "vgg_admin" },
-                    { 2L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 320, DateTimeKind.Unspecified).AddTicks(1085), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "CompanyAdmin", "clientadmin" },
-                    { 3L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 320, DateTimeKind.Unspecified).AddTicks(1101), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "Interviewer", "clientuser" },
-                    { 4L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 7, 29, 51, 320, DateTimeKind.Unspecified).AddTicks(1103), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "Recruiter", "clientuser" }
+                    { 1L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 662, DateTimeKind.Unspecified).AddTicks(8985), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "VGG_Admin", "vgg_admin" },
+                    { 2L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 663, DateTimeKind.Unspecified).AddTicks(1156), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "CompanyAdmin", "clientadmin" },
+                    { 3L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 663, DateTimeKind.Unspecified).AddTicks(1173), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "Interviewer", "clientuser" },
+                    { 4L, "seed", new DateTimeOffset(new DateTime(2019, 9, 11, 10, 1, 25, 663, DateTimeKind.Unspecified).AddTicks(1175), new TimeSpan(0, 1, 0, 0, 0)), null, true, false, "Recruiter", "clientuser" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -489,24 +457,14 @@ namespace Recode.Data.Migrations
                 column: "CandidateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InterviewSessionResults_InterviewSessionId",
+                name: "IX_InterviewSessionResults_InterviewSessionMetricId",
                 table: "InterviewSessionResults",
-                column: "InterviewSessionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InterviewSessionResults_MetricId",
-                table: "InterviewSessionResults",
-                column: "MetricId");
+                column: "InterviewSessionMetricId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InterviewSessions_CompanyId",
                 table: "InterviewSessions",
                 column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InterviewSessions_DepartmentId",
-                table: "InterviewSessions",
-                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InterviewSessions_JobRoleId",
@@ -570,10 +528,10 @@ namespace Recode.Data.Migrations
                 name: "InterviewSessionInterviewers");
 
             migrationBuilder.DropTable(
-                name: "InterviewSessionMetrics");
+                name: "InterviewSessionResults");
 
             migrationBuilder.DropTable(
-                name: "InterviewSessionResults");
+                name: "InterviewSessions");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
@@ -582,22 +540,22 @@ namespace Recode.Data.Migrations
                 name: "Candidates");
 
             migrationBuilder.DropTable(
-                name: "InterviewSessions");
+                name: "InterviewSessionMetrics");
 
             migrationBuilder.DropTable(
-                name: "Metrics");
+                name: "Venues");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "JobRoles");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Venues");
+                name: "JobRoles");
+
+            migrationBuilder.DropTable(
+                name: "Metrics");
 
             migrationBuilder.DropTable(
                 name: "Departments");

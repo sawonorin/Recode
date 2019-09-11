@@ -9,10 +9,10 @@ namespace Recode.Data.AppEntity
     public class Role : Entity<long>
     {
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string RoleName { get; set; }
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string RoleType { get; set; }
         public string Description { get; set; }
 

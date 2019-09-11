@@ -78,8 +78,8 @@ CREATE TABLE [Roles] (
     [IsDeleted] bit NOT NULL,
     [IsActive] bit NOT NULL,
     [CreateById] nvarchar(max) NOT NULL,
-    [RoleName] nvarchar(10) NOT NULL,
-    [RoleType] nvarchar(10) NOT NULL,
+    [RoleName] nvarchar(20) NOT NULL,
+    [RoleType] nvarchar(20) NOT NULL,
     [Description] nvarchar(max) NULL,
     CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
 );
@@ -134,6 +134,34 @@ CREATE TABLE [JobRoles] (
 
 GO
 
+CREATE TABLE [InterviewSessionMetrics] (
+    [Id] bigint NOT NULL IDENTITY,
+    [DateCreated] datetimeoffset NOT NULL,
+    [IsDeleted] bit NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreateById] nvarchar(max) NOT NULL,
+    [MetricId] bigint NOT NULL,
+    [InterviewSessionId] bigint NOT NULL,
+    CONSTRAINT [PK_InterviewSessionMetrics] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_InterviewSessionMetrics_Metrics_MetricId] FOREIGN KEY ([MetricId]) REFERENCES [Metrics] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
+CREATE TABLE [InterviewSessionInterviewers] (
+    [Id] bigint NOT NULL IDENTITY,
+    [DateCreated] datetimeoffset NOT NULL,
+    [IsDeleted] bit NOT NULL,
+    [IsActive] bit NOT NULL,
+    [CreateById] nvarchar(max) NOT NULL,
+    [InterviewerId] bigint NOT NULL,
+    [InterviewSessionId] bigint NOT NULL,
+    CONSTRAINT [PK_InterviewSessionInterviewers] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_InterviewSessionInterviewers_Users_InterviewerId] FOREIGN KEY ([InterviewerId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+
+GO
+
 CREATE TABLE [UserRoles] (
     [Id] bigint NOT NULL IDENTITY,
     [DateCreated] datetimeoffset NOT NULL,
@@ -156,7 +184,7 @@ CREATE TABLE [Candidates] (
     [IsActive] bit NOT NULL,
     [CreateById] nvarchar(max) NOT NULL,
     [CompanyId] bigint NOT NULL,
-    [JobRoleId] bigint NOT NULL,
+    [JobRoleId] bigint NULL,
     [DepartmentId] bigint NOT NULL,
     [FirstName] nvarchar(50) NULL,
     [LastName] nvarchar(50) NULL,
@@ -166,7 +194,7 @@ CREATE TABLE [Candidates] (
     [Status] int NOT NULL,
     CONSTRAINT [PK_Candidates] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_Candidates_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Candidates_JobRoles_JobRoleId] FOREIGN KEY ([JobRoleId]) REFERENCES [JobRoles] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_Candidates_JobRoles_JobRoleId] FOREIGN KEY ([JobRoleId]) REFERENCES [JobRoles] ([Id]) ON DELETE NO ACTION
 );
 
 GO
@@ -178,18 +206,16 @@ CREATE TABLE [InterviewSessions] (
     [IsActive] bit NOT NULL,
     [CreateById] nvarchar(max) NOT NULL,
     [CompanyId] bigint NOT NULL,
-    [DepartmentId] bigint NOT NULL,
     [JobRoleId] bigint NOT NULL,
     [RecruiterId] bigint NOT NULL,
     [Status] int NOT NULL,
-    [VenueId] bigint NOT NULL,
+    [VenueId] bigint NULL,
     [StartTime] datetime2 NOT NULL,
     [EndTime] datetime2 NOT NULL,
     CONSTRAINT [PK_InterviewSessions] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_InterviewSessions_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_InterviewSessions_JobRoles_JobRoleId] FOREIGN KEY ([JobRoleId]) REFERENCES [JobRoles] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_InterviewSessions_Users_RecruiterId] FOREIGN KEY ([RecruiterId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_InterviewSessions_Venues_VenueId] FOREIGN KEY ([VenueId]) REFERENCES [Venues] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_InterviewSessions_Venues_VenueId] FOREIGN KEY ([VenueId]) REFERENCES [Venues] ([Id]) ON DELETE NO ACTION
 );
 
 GO
@@ -203,38 +229,7 @@ CREATE TABLE [InterviewSessionCandidates] (
     [CandidateId] bigint NOT NULL,
     [InterviewSessionId] bigint NOT NULL,
     CONSTRAINT [PK_InterviewSessionCandidates] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_InterviewSessionCandidates_Candidates_CandidateId] FOREIGN KEY ([CandidateId]) REFERENCES [Candidates] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_InterviewSessionCandidates_InterviewSessions_InterviewSessionId] FOREIGN KEY ([InterviewSessionId]) REFERENCES [InterviewSessions] ([Id]) ON DELETE CASCADE
-);
-
-GO
-
-CREATE TABLE [InterviewSessionInterviewers] (
-    [Id] bigint NOT NULL IDENTITY,
-    [DateCreated] datetimeoffset NOT NULL,
-    [IsDeleted] bit NOT NULL,
-    [IsActive] bit NOT NULL,
-    [CreateById] nvarchar(max) NOT NULL,
-    [InterviewerId] bigint NOT NULL,
-    [InterviewSessionId] bigint NOT NULL,
-    CONSTRAINT [PK_InterviewSessionInterviewers] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_InterviewSessionInterviewers_InterviewSessions_InterviewSessionId] FOREIGN KEY ([InterviewSessionId]) REFERENCES [InterviewSessions] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_InterviewSessionInterviewers_Users_InterviewerId] FOREIGN KEY ([InterviewerId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
-);
-
-GO
-
-CREATE TABLE [InterviewSessionMetrics] (
-    [Id] bigint NOT NULL IDENTITY,
-    [DateCreated] datetimeoffset NOT NULL,
-    [IsDeleted] bit NOT NULL,
-    [IsActive] bit NOT NULL,
-    [CreateById] nvarchar(max) NOT NULL,
-    [MetricId] bigint NOT NULL,
-    [InterviewSessionId] bigint NOT NULL,
-    CONSTRAINT [PK_InterviewSessionMetrics] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_InterviewSessionMetrics_InterviewSessions_InterviewSessionId] FOREIGN KEY ([InterviewSessionId]) REFERENCES [InterviewSessions] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_InterviewSessionMetrics_Metrics_MetricId] FOREIGN KEY ([MetricId]) REFERENCES [Metrics] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_InterviewSessionCandidates_Candidates_CandidateId] FOREIGN KEY ([CandidateId]) REFERENCES [Candidates] ([Id]) ON DELETE CASCADE
 );
 
 GO
@@ -246,14 +241,12 @@ CREATE TABLE [InterviewSessionResults] (
     [IsActive] bit NOT NULL,
     [CreateById] nvarchar(max) NOT NULL,
     [CandidateId] bigint NOT NULL,
-    [InterviewSessionId] bigint NOT NULL,
-    [MetricId] bigint NOT NULL,
+    [InterviewSessionMetricId] bigint NOT NULL,
     [Rating] int NOT NULL,
     [Remark] nvarchar(400) NULL,
     CONSTRAINT [PK_InterviewSessionResults] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_InterviewSessionResults_Candidates_CandidateId] FOREIGN KEY ([CandidateId]) REFERENCES [Candidates] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_InterviewSessionResults_InterviewSessions_InterviewSessionId] FOREIGN KEY ([InterviewSessionId]) REFERENCES [InterviewSessions] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_InterviewSessionResults_Metrics_MetricId] FOREIGN KEY ([MetricId]) REFERENCES [Metrics] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_InterviewSessionResults_InterviewSessionMetrics_InterviewSessionMetricId] FOREIGN KEY ([InterviewSessionMetricId]) REFERENCES [InterviewSessionMetrics] ([Id]) ON DELETE CASCADE
 );
 
 GO
@@ -261,10 +254,10 @@ GO
 IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'CreateById', N'DateCreated', N'Description', N'IsActive', N'IsDeleted', N'RoleName', N'RoleType') AND [object_id] = OBJECT_ID(N'[Roles]'))
     SET IDENTITY_INSERT [Roles] ON;
 INSERT INTO [Roles] ([Id], [CreateById], [DateCreated], [Description], [IsActive], [IsDeleted], [RoleName], [RoleType])
-VALUES (CAST(1 AS bigint), N'seed', '2019-09-11T07:29:51.319+01:00', NULL, 1, 0, N'VGG_Admin', N'vgg_admin'),
-(CAST(2 AS bigint), N'seed', '2019-09-11T07:29:51.320+01:00', NULL, 1, 0, N'CompanyAdmin', N'clientadmin'),
-(CAST(3 AS bigint), N'seed', '2019-09-11T07:29:51.320+01:00', NULL, 1, 0, N'Interviewer', N'clientuser'),
-(CAST(4 AS bigint), N'seed', '2019-09-11T07:29:51.320+01:00', NULL, 1, 0, N'Recruiter', N'clientuser');
+VALUES (CAST(1 AS bigint), N'seed', '2019-09-11T10:01:25.662+01:00', NULL, 1, 0, N'VGG_Admin', N'vgg_admin'),
+(CAST(2 AS bigint), N'seed', '2019-09-11T10:01:25.663+01:00', NULL, 1, 0, N'CompanyAdmin', N'clientadmin'),
+(CAST(3 AS bigint), N'seed', '2019-09-11T10:01:25.663+01:00', NULL, 1, 0, N'Interviewer', N'clientuser'),
+(CAST(4 AS bigint), N'seed', '2019-09-11T10:01:25.663+01:00', NULL, 1, 0, N'Recruiter', N'clientuser');
 IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'CreateById', N'DateCreated', N'Description', N'IsActive', N'IsDeleted', N'RoleName', N'RoleType') AND [object_id] = OBJECT_ID(N'[Roles]'))
     SET IDENTITY_INSERT [Roles] OFF;
 
@@ -314,19 +307,11 @@ CREATE INDEX [IX_InterviewSessionResults_CandidateId] ON [InterviewSessionResult
 
 GO
 
-CREATE INDEX [IX_InterviewSessionResults_InterviewSessionId] ON [InterviewSessionResults] ([InterviewSessionId]);
-
-GO
-
-CREATE INDEX [IX_InterviewSessionResults_MetricId] ON [InterviewSessionResults] ([MetricId]);
+CREATE INDEX [IX_InterviewSessionResults_InterviewSessionMetricId] ON [InterviewSessionResults] ([InterviewSessionMetricId]);
 
 GO
 
 CREATE INDEX [IX_InterviewSessions_CompanyId] ON [InterviewSessions] ([CompanyId]);
-
-GO
-
-CREATE INDEX [IX_InterviewSessions_DepartmentId] ON [InterviewSessions] ([DepartmentId]);
 
 GO
 
@@ -367,7 +352,7 @@ CREATE UNIQUE INDEX [IX_Users_SSOUserId] ON [Users] ([SSOUserId]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20190911062951_InitialMigration', N'2.2.6-servicing-10079');
+VALUES (N'20190911090125_InitialMigration', N'2.2.6-servicing-10079');
 
 GO
 
