@@ -21,6 +21,7 @@ using Recode.Service.Implementations.Services;
 using Recode.Repository.CoreRepositories;
 using Recode.Service.EntityService;
 using Recode.Service.SSO;
+using Recode.Service.Implementations.Repositories;
 
 namespace Recode.Api.Extensions
 {
@@ -63,7 +64,7 @@ namespace Recode.Api.Extensions
             //services.AddScoped<IRoleRepository, RoleRepository>();
             //services.AddScoped<IPermissionRepository, PermissionRepository>();
             //services.AddScoped<ICorporateRepository, CorporateRepository>();
-            //services.AddScoped<IEmailRepository, EmailRepository>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
             //services.AddScoped<IBusinessRepository, BusinessRepository>();
             //services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
             //services.AddScoped<ICorporateDocumentRepository, CorporateDocumentRepository>();

@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Vigipay.Orbit.Core.Interfaces.Repositories;
-using Vigipay.Orbit.Core.Models;
 using Recode.Data.AppEntity;
+using Recode.Core.Interfaces.Repositories;
+using Recode.Core.Models;
 
 namespace Recode.Service.Implementations.Repositories
 {

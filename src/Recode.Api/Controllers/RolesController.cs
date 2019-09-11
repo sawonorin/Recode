@@ -17,7 +17,7 @@ namespace Recode.Api.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class RolesController : ControllerBase
+    public class RolesController : BaseApiController
     {
         private readonly IRoleService _roleService;
         public RolesController(IRoleService roleService)
