@@ -20,6 +20,7 @@ using Recode.Service.Implementations;
 using Recode.Service.Implementations.Services;
 using Recode.Repository.CoreRepositories;
 using Recode.Service.EntityService;
+using Recode.Service.SSO;
 
 namespace Recode.Api.Extensions
 {
@@ -49,6 +50,8 @@ namespace Recode.Api.Extensions
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEmailSendingJob, EmailSendingJob>();
             services.AddScoped<IAuditLogService, AuditLogService>();
+            services.AddScoped<ISSOService, SSOService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             // Managers
             services.AddScoped<IAuthService, AuthService>();
