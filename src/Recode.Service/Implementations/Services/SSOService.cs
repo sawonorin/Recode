@@ -40,7 +40,7 @@ namespace Recode.Service.SSO
             client.BaseAddress = new Uri(_ssoConstants.SSOAPI);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clienttoken);
 
-            client.DefaultRequestHeaders.Add("client-id", isCurrentClient ? _ssoConstants.ClientId  : _ssoConstants.ClientId);
+            client.DefaultRequestHeaders.Add("client-id", isCurrentClient ? _ssoConstants.ClientId  : _ssoConstants.EbipsClientId);
 
             return client;
         }
@@ -644,8 +644,8 @@ namespace Recode.Service.SSO
                 var response = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
                 {
                     Address = "/identity/connect/token",
-                    ClientId = _ssoConstants.ClientId,
-                    ClientSecret = _ssoConstants.ClientSecret, //Constants.EbipsClientSecret,
+                    ClientId = _ssoConstants.EbipsClientId,
+                    ClientSecret = _ssoConstants.EbipsClientSecret, //Constants.EbipsClientSecret,
                     Scope = $"identity-server-api ebipsgatewayapi"
                 });
                 if (!string.IsNullOrEmpty(response.AccessToken))

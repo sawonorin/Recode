@@ -43,7 +43,7 @@ namespace Recode.Service.Implementations.Services
         {
             //vigipay.orbit.role
             var sub = _httpAccessor.HttpContext.User.Claims
-             .FirstOrDefault(x => x.Type == "recodeapi.role");
+             .FirstOrDefault(x => x.Type == "recode.role");
             if (sub != null)
             {
                 return sub.Value;

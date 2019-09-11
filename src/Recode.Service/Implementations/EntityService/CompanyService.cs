@@ -48,7 +48,7 @@ namespace Recode.Service.EntityService
             {
                 Name = model.Name,
                 Code = model.Code,
-                CreateById = _httpContext.GetCurrentUserId()
+                CreateById = string.IsNullOrEmpty(_httpContext.GetCurrentUserId()) ? "test" : _httpContext.GetCurrentUserId()
             };
 
             await _companyCommandRepo.InsertAsync(company);

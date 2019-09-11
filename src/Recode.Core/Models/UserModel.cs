@@ -15,7 +15,7 @@ namespace Recode.Core.Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string UserName { get; set; }
-        public RoleModel[] Roles { get; set; }
+        //public RoleModel[] Roles { get; set; }
         public long CompanyId { get; set; }
         public bool EmailConfirmed { get; set; }
         public bool IsActive { get; set; }

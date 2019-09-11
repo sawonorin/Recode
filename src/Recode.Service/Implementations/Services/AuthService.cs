@@ -96,24 +96,29 @@ namespace Recode.Core.Managers
 
         public async Task<Claim[]> ValidateUser(string userId)
         {
-            if (string.IsNullOrEmpty(userId))
-                throw new BadRequestException("User is required");
-
-            var user = _userQueryRepo.GetAll().FirstOrDefault(x => x.SSOUserId == userId);
-            if (user == null)
-                throw new BadRequestException("User does not exist on recode");
-
-            if (!user.IsActive)
-                throw new BadRequestException("User is not active. Please contact your administrator.");
-
             string ssoRole = _httpContextService.GetSSORole();
-            //var clms = await _permissionRepository.GetClaims(userId);
-            var claims = new Claim[]
+            if (ssoRole.ToLower() != "vgg_admin")
             {
+                if (string.IsNullOrEmpty(userId))
+                    throw new BadRequestException("User is required");
+
+                var user = _userQueryRepo.GetAll().FirstOrDefault(x => x.SSOUserId == userId);
+                if (user == null)
+                    throw new BadRequestException("User does not exist on recode");
+
+                if (!user.IsActive)
+                    throw new BadRequestException("User is not active. Please contact your administrator.");
+
+                //var clms = await _permissionRepository.GetClaims(userId);
+                var claims = new Claim[]
+                {
                     new Claim("companyId", user.CompanyId.ToString())
                     , new Claim(ClaimTypes.Role, _httpContextService.GetSSORole())
-            };
-            return claims;
+                };
+                return claims;
+            }
+
+            return new Claim[] { new Claim("role", ssoRole) };
         }
 
         public async Task<bool> VerifyConfirmationToken(string userId, string token)

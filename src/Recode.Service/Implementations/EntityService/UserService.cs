@@ -51,7 +51,7 @@ namespace Recode.Service.EntityService
             _userRoleQueryRepo = userRoleQueryRepo;
             _httpContext = httpContext;
 
-            CurrentUserId = _httpContext.GetCurrentUserId();
+            CurrentUserId = string.IsNullOrEmpty(_httpContext.GetCurrentUserId()) ? "testuser" : _httpContext.GetCurrentUserId();
         }
 
         public async Task<ExecutionResponse<UserModel>> AddUserRole(UserRoleModel model)
@@ -103,8 +103,11 @@ namespace Recode.Service.EntityService
                 SSOUserId = registerReponse.ResponseData.UserId
             };
             await _userCommandRepo.InsertAsync(user);
-
             await _userCommandRepo.SaveChangesAsync();
+
+            //assign role to user
+            await _userRoleCommandRepo.InsertAsync(new UserRole {RoleId = role.Id, UserId = user.Id, CreateById = CurrentUserId });
+            await _userRoleCommandRepo.SaveChangesAsync();
 
             //send email confirmation mail
             _emailService.EmailConfirmation(registerReponse.ResponseData.EmailConfirmationToken, model.Email, $"{model.FirstName} {model.LastName}", registerReponse.ResponseData.UserId);
@@ -209,8 +212,9 @@ namespace Recode.Service.EntityService
 
         public async Task<ExecutionResponse<UserModelPage>> GetUsers(string email = "", string firstName = "", string lastName = "", string userName = "", int pageSize = 10, int pageNo = 1)
         {
-            var users = _userQueryRepo.GetAll().Where(x => x.CompanyId == _httpContext.GetCurrentCompanyId());
+            var users = _userQueryRepo.GetAll();//.Where(x => x.CompanyId == _httpContext.GetCurrentCompanyId());
 
+            users = _httpContext.GetCurrentCompanyId() == 0 ? users : users.Where(x => x.CompanyId == _httpContext.GetCurrentCompanyId());
             users = string.IsNullOrEmpty(email) ? users : users.Where(x => x.Email.Contains(email));
             users = string.IsNullOrEmpty(firstName) ? users : users.Where(x => x.FirstName.Contains(firstName));
             users = string.IsNullOrEmpty(lastName) ? users : users.Where(x => x.LastName.Contains(lastName));
