@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Recode.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Recode.Api.RequestModels.Model.Validate">
+            <summary>
+            Performs Validation
+            </summary>
+        </member>
+        <member name="M:Recode.Api.RequestModels.Model.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Sets up rules for Validation
+            </summary>
+            <param name="validationContext"></param>
+            <returns></returns>
+            // => new ValidationResult[0];
+        </member>
+    </members>
+</doc>
