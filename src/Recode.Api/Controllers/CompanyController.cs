@@ -16,11 +16,11 @@ namespace Recode.Api.Controllers
     [ApiController]
     public class CompanyController : BaseApiController
     {
-        private readonly ICompanyService _userService;
+        private readonly ICompanyService _companyService;
 
-        public CompanyController(ICompanyService userService)
+        public CompanyController(ICompanyService companyService)
         {
-            _userService = userService;
+            _companyService = companyService;
         }
 
         [HttpGet("GetAll")]
@@ -29,7 +29,7 @@ namespace Recode.Api.Controllers
         {
             try
             {
-                var response = await _userService.GetCompanys(name: name, code: code, pageSize: pageSize, pageNo: pageNo);
+                var response = await _companyService.GetCompanys(name: name, code: code, pageSize: pageSize, pageNo: pageNo);
                 if (response.ResponseCode != ResponseCode.Ok)
                 {
                     return Ok(WebApiResponses<CompanyModelPage>.ErrorOccured(response.Message));
@@ -49,7 +49,7 @@ namespace Recode.Api.Controllers
         {
             try
             {
-                var response = await _userService.GetCompany(Id);
+                var response = await _companyService.GetCompany(Id);
                 if (response.ResponseCode != ResponseCode.Ok)
                 {
                     return Ok(WebApiResponses<CompanyModel>.ErrorOccured(response.Message));
@@ -72,7 +72,7 @@ namespace Recode.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(GetModelStateErrors(ModelState));
 
-                var response = await _userService.CreateCompany(model);
+                var response = await _companyService.CreateCompany(model);
                 if (response.ResponseCode != ResponseCode.Ok)
                 {
                     return Ok(WebApiResponses<CompanyModel>.ErrorOccured(response.Message));
@@ -95,7 +95,7 @@ namespace Recode.Api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(GetModelStateErrors(ModelState));
 
-                var response = await _userService.UpdateCompany(model);
+                var response = await _companyService.UpdateCompany(model);
                 if (response.ResponseCode != ResponseCode.Ok)
                 {
                     return Ok(WebApiResponses<CompanyModel>.ErrorOccured(response.Message));
