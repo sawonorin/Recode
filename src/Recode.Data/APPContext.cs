@@ -47,7 +47,7 @@ namespace Recode.Data
         public APPContext(DbContextOptions<APPContext> options)
           : base(options)
         {
-            _httpContextAccessor = (IHttpContextAccessor)this.GetInfrastructure().GetService(typeof(IHttpContextAccessor)); ;
+           // _httpContextAccessor = (IHttpContextAccessor)this.GetInfrastructure().GetService(typeof(IHttpContextAccessor)); ;
         }
 
         private IMongoCollection<AuditLog> AuditLog
