@@ -46,7 +46,7 @@ namespace Recode.Service.EntityService
             _httpContext = httpContext;
         }
 
-        public async Task<ExecutionResponse<JobRoleModel>> CreateJobRole(JobRoleModel model)
+        public async Task<ExecutionResponse<JobRoleModel>> CreateJobRole(UpdateJobRoleModel model)
         {
             var oldJobRole = _jobRoleQueryRepo.GetAll().FirstOrDefault(x => x.Name.Trim().ToLower() == model.Name.Trim().ToLower() && x.Department.CompanyId == CurrentCompanyId);
 

@@ -87,7 +87,7 @@ namespace Recode.Api.Controllers
         /// <returns></returns>
         [HttpPost("Create")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<JobRoleModel>))]
-        public async Task<IActionResult> Create(JobRoleModel model)
+        public async Task<IActionResult> Create(UpdateJobRoleModel model)
         {
             try
             {

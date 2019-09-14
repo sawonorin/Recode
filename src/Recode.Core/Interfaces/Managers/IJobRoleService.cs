@@ -12,7 +12,7 @@ namespace Recode.Core.Interfaces.Managers
         Task<ExecutionResponse<JobRoleModelPage>> GetJobRoles(string name = "", long departmentId = 0, int pageSize = 10, int pageNo = 1);
         Task<ExecutionResponse<JobRoleModel>> GetJobRole(long Id);
         Task<ExecutionResponse<object>> DeleteJobRole(long Id);
-        Task<ExecutionResponse<JobRoleModel>> CreateJobRole(JobRoleModel model);
+        Task<ExecutionResponse<JobRoleModel>> CreateJobRole(UpdateJobRoleModel model);
         Task<ExecutionResponse<JobRoleModel>> UpdateJobRole(UpdateJobRoleModel model);
     }
 }
