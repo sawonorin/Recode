@@ -21,11 +21,13 @@ namespace Recode.Core.Managers
     {
         private readonly IHttpContextExtensionService _httpContextService;
         private readonly IRepositoryQuery<User, long> _userQueryRepo;
+        private readonly IRepositoryCommand<User, long> _userCommandRepo;
         private readonly ISSOService _ssoService;
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
         public AuthService(
             IRepositoryQuery<User, long> userQueryRepo,
+            IRepositoryCommand<User, long> userCommandRepo,
             ISSOService ssoService,
             IUserService userService,
             IEmailService emailService, IHttpContextExtensionService httpContextExtensionService)
@@ -35,6 +37,7 @@ namespace Recode.Core.Managers
             _userService = userService;
             _emailService = emailService;
             _userQueryRepo = userQueryRepo;
+            _userCommandRepo = userCommandRepo;
         }
 
         public async Task<bool> ForgetPassword(string email)
@@ -96,34 +99,35 @@ namespace Recode.Core.Managers
 
         public async Task<Claim[]> ValidateUser(string userId)
         {
-            string ssoRole = _httpContextService.GetSSORole();
-            if (ssoRole.ToLower() != "vgg_admin")
+            string[] ssoRole = _httpContextService.GetSSORole();
+
+            if (string.IsNullOrEmpty(userId))
+                throw new BadRequestException("User is required");
+
+            var user = _userQueryRepo.GetAll().FirstOrDefault(x => x.SSOUserId == userId);
+            if (user == null)
+                throw new BadRequestException("User does not exist on recode");
+
+            if (!user.IsActive)
+                throw new BadRequestException("User is not active. Please contact your administrator.");
+
+            //var clms = await _permissionRepository.GetClaims(userId);
+            var claims = new List<Claim>
             {
-                if (string.IsNullOrEmpty(userId))
-                    throw new BadRequestException("User is required");
-
-                var user = _userQueryRepo.GetAll().FirstOrDefault(x => x.SSOUserId == userId);
-                if (user == null)
-                    throw new BadRequestException("User does not exist on recode");
-
-                if (!user.IsActive)
-                    throw new BadRequestException("User is not active. Please contact your administrator.");
-
-                //var clms = await _permissionRepository.GetClaims(userId);
-                var claims = new Claim[]
-                {
                     new Claim("companyId", user.CompanyId.ToString())
-                    , new Claim(ClaimTypes.Role, _httpContextService.GetSSORole())
-                };
-                return claims;
-            }
+            };
 
-            return new Claim[] { new Claim("role", ssoRole) };
+            foreach (var role in ssoRole)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            return claims.ToArray();
         }
 
         public async Task<bool> VerifyConfirmationToken(string userId, string token)
         {
-            if (string.IsNullOrEmpty(userId))
+            var user = _userQueryRepo.GetAll().FirstOrDefault(x => x.SSOUserId == userId);
+            if (user == null)
             {
                 throw new BadRequestException("User is invalid");
             }
@@ -134,6 +138,10 @@ namespace Recode.Core.Managers
             {
                 throw new BadRequestException("User account confirmation failed. Please try again");
             }
+
+            //update user as email confirmed
+            user.EmailConfirmed = true;
+            await _userCommandRepo.UpdateAsync(user);
 
             // await _emailService.EmailConfirmation();
 
@@ -156,7 +164,7 @@ namespace Recode.Core.Managers
                     throw new BadRequestException(result.Message);
                 }
 
-                return new LoginResponseModel { Token = result.ResponseData.token_type, User = response.ResponseData };
+                return new LoginResponseModel { Token = result.ResponseData.access_token, User = response.ResponseData };
             }
             throw new Exception("An error occured");
         }

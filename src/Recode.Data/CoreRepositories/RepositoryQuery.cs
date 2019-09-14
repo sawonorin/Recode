@@ -69,7 +69,10 @@ namespace Recode.Repository.CoreRepositories
             return Table.AsNoTracking().Where(x => !x.IsDeleted && x.IsActive);
         }
 
-
+        public IQueryable<TEntity> GetAllIncludeInactive()
+        {
+            return Table.AsNoTracking().Where(x => !x.IsDeleted);
+        }
 
         public virtual List<TEntity> GetAllList()
         {

@@ -39,16 +39,12 @@ namespace Recode.Service.Implementations.Services
             return null;
         }
 
-        public string GetSSORole()
+        public string[] GetSSORole()
         {
-            //vigipay.orbit.role
             var sub = _httpAccessor.HttpContext.User.Claims
-             .FirstOrDefault(x => x.Type == "recode.role");
-            if (sub != null)
-            {
-                return sub.Value;
-            }
-            return string.Empty;
+             .Where(x => x.Type == "recode.role").Select(s=>s.Value).ToArray();
+
+            return sub;
         }
     }
 }

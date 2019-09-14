@@ -15,6 +15,7 @@ using Recode.Core.Interfaces.Services;
 namespace Recode.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class RolesController : BaseApiController
     {
@@ -24,6 +25,10 @@ namespace Recode.Api.Controllers
             _roleService = roleService;
         }
 
+        /// <summary>
+        /// Get all roles on the application
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(RoleModel[]), 200)]
         public async Task<IActionResult> Get()

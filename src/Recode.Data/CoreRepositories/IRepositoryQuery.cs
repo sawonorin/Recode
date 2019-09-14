@@ -61,6 +61,19 @@ namespace Recode.Repository.CoreRepositories
         IQueryable<TEntity> GetAll();
 
 
+        /// <summary>
+        /// Used to get a IQueryable that is used to retrieve entities from entire table.
+        /// <see>
+        ///     <cref>UnitOfWorkAttribute</cref>
+        /// </see>
+        ///     attribute must be used to be able to call this method since this method
+        /// returns IQueryable and it requires open database connection to use it.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IQueryable{TEntity}"/> to be used to select entities from database 
+        /// 
+        /// </returns>
+        IQueryable<TEntity> GetAllIncludeInactive();
 
         /// <summary>
         /// Used to get all entities.

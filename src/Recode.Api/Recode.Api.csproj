@@ -16,7 +16,6 @@
     <Compile Remove="Controllers\BusinessesController.cs" />
     <Compile Remove="Controllers\CorporatesController.cs" />
     <Compile Remove="Controllers\DocumentTypesController.cs" />
-    <Compile Remove="Controllers\OnboardController.cs" />
     <Compile Remove="Controllers\PermissionsController.cs" />
   </ItemGroup>
 

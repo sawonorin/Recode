@@ -67,4 +67,19 @@ namespace Recode.Core.Models
         public long UserId { get; set; }
         public long RoleId { get; set; }
     }
+
+    public class OnboardUserModel
+    {
+        [Required(ErrorMessage = "First Name is required")]
+        public string FirstName { get; set; }
+        [Required(ErrorMessage = "Last Name is required")]
+        public string LastName { get; set; }
+        [Required]
+        [EmailAddress(ErrorMessage = "Email Address is required")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "UserName is required")]
+        public string UserName { get; set; }
+        [Required(ErrorMessage = "Id is required")]
+        public string Id { get; set; }
+    }
 }

@@ -41,7 +41,7 @@ namespace Recode.Data
         public DbSet<Metric> Metrics { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Candidate> Candidates { get; set; }
-        public DbSet<Company> Comapanies { get; set; }
+        public DbSet<Company> Companies { get; set; }
         #endregion
 
         public APPContext(DbContextOptions<APPContext> options)

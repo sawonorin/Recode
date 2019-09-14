@@ -56,7 +56,7 @@ namespace Recode.Service.SSO
                     Address = "/identity/connect/token",
                     ClientId = _ssoConstants.ClientId,
                     ClientSecret = _ssoConstants.ClientSecret,
-                    Scope = "openid profile email roles identity-server-api",
+                    Scope = "openid profile identity-server-api",
                     UserName = loginDto.UserName,
                     Password = loginDto.Password
                 });
@@ -98,7 +98,7 @@ namespace Recode.Service.SSO
 
                 var claims = GenerateClaims(registerDto.Claims);
 
-                //registerDto.Claims = new List<Claim>();
+                //registerDto.Claims = new List<SSOClaim>();
 
                 var client = await GetClient();
 
@@ -153,15 +153,15 @@ namespace Recode.Service.SSO
             }
         }
 
-        private List<Claim> GenerateClaims(List<Claim> claims)
+        private List<SSOClaim> GenerateClaims(List<SSOClaim> claims)
         {
-            List<Claim> newClaims = new List<Claim>();
+            List<SSOClaim> newClaims = new List<SSOClaim>();
 
-            newClaims.Add(new Claim("application", _ssoConstants.ClientId));
+            newClaims.Add(new SSOClaim("application", _ssoConstants.ClientId));
 
             foreach (var item in claims)
             {
-                newClaims.Add(new Claim("role", item.Value));
+                newClaims.Add(new SSOClaim("role", item.Value));
             }
 
             return newClaims;
@@ -292,7 +292,7 @@ namespace Recode.Service.SSO
             }
         }
 
-        public async Task<ExecutionResponse<List<Claim>>> GetUserClaims(string ssoUserId)
+        public async Task<ExecutionResponse<List<SSOClaim>>> GetUserClaims(string ssoUserId)
         {
             try
             {
@@ -302,10 +302,10 @@ namespace Recode.Service.SSO
 
                 var result = await response.Content.ReadAsStringAsync();
 
-                var resObj = JsonConvert.DeserializeObject<List<Claim>>(result);
+                var resObj = JsonConvert.DeserializeObject<List<SSOClaim>>(result);
                 if (response.IsSuccessStatusCode)
                 {
-                    return new ExecutionResponse<List<Claim>>
+                    return new ExecutionResponse<List<SSOClaim>>
                     {
                         Message = "",
                         ResponseCode = ResponseCode.Ok,
@@ -314,7 +314,7 @@ namespace Recode.Service.SSO
                 }
                 else
                 {
-                    return new ExecutionResponse<List<Claim>>
+                    return new ExecutionResponse<List<SSOClaim>>
                     {
                         Message = $"{result}",
                         ResponseCode = ResponseCode.ServerException,
@@ -325,7 +325,7 @@ namespace Recode.Service.SSO
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return new ExecutionResponse<List<Claim>>
+                return new ExecutionResponse<List<SSOClaim>>
                 {
                     Message = $"An error occurred while processing your request - {ex.Message}",
                     ResponseCode = ResponseCode.ServerException,

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recode.Core.Interfaces.Managers;
@@ -14,6 +15,7 @@ namespace Recode.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : BaseApiController
     {
         private readonly IUserService _userService;
@@ -23,6 +25,18 @@ namespace Recode.Api.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Get all users
+        /// (vgg_admin) gets users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="userName"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNo"></param>
+        /// <returns></returns>
         [HttpGet("GetAll")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModelPage>))]
         public async Task<IActionResult> GetAll(string email = "", string firstName = "", string lastName = "", string userName = "", int pageSize = 10, int pageNo = 1)
@@ -43,6 +57,13 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get users by email
+        /// (vgg_admin) gets users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpGet("GetUserByEmail/{email}")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> GetUsersByEmail(string email)
@@ -62,7 +83,14 @@ namespace Recode.Api.Controllers
                 return Ok(WebApiResponses<UserModel>.ErrorOccured(ex.Message));
             }
         }
-        
+
+        /// <summary>
+        /// Get users by an array of Ids
+        /// (vgg_admin) gets users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+        /// </summary>
+        /// <param name="UserIds"></param>
+        /// <returns></returns>
         [HttpPost("GetUserByIds")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel[]>))]
         public async Task<IActionResult> GetUsersByIds(long[] UserIds)
@@ -83,7 +111,15 @@ namespace Recode.Api.Controllers
             }
         }
 
-        [HttpGet("GetUserByRoleId/{roleId}")]
+        /// <summary>
+        /// Get users by roleId
+        /// (vgg_admin) gets users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        [HttpGet("GetUsersByRoleId/{roleId}")]
+        [AllowAnonymous]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel[]>))]
         public async Task<IActionResult> GetUsersByRoleId(long roleId)
         {
@@ -103,13 +139,20 @@ namespace Recode.Api.Controllers
             }
         }
 
-        [HttpGet("GetUserById/{userId}")]
+        /// <summary>
+        /// Get user by Id
+        /// (vgg_admin) gets users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet("GetUserById/{Id}")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
-        public async Task<IActionResult> GetUsersById(long userId)
+        public async Task<IActionResult> GetUsersById(long Id)
         {
             try
             {
-                var response = await _userService.GetUser(userId);
+                var response = await _userService.GetUser(Id);
                 if (response.ResponseCode != ResponseCode.Ok)
                 {
                     return Ok(WebApiResponses<UserModel>.ErrorOccured(response.Message));
@@ -123,6 +166,13 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get users by SSO Id
+        /// (vgg_admin) gets users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+        /// </summary>
+        /// <param name="ssoUserId"></param>
+        /// <returns></returns>
         [HttpGet("GetUserBySSOUserId/{ssoUserId}")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> GetUsersBySSOUserId(string ssoUserId)
@@ -143,6 +193,13 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// After User creation, if user does not receive confirmation email and EmailConfirmed = false
+        /// Admin can call this endpoint to resend email confirmation mail
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "CompanyAdmin, clientadmin, vgg_admin")]
         [HttpGet("ResendEmailConfirmation/{UserId}")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<bool>))]
         public async Task<IActionResult> ResendEmailConfirmation(long UserId)
@@ -163,6 +220,15 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Toggle activate user.
+        /// If user is active, he/she becomes inactive and vice versa
+        /// (vgg_admin) for all users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "CompanyAdmin, clientadmin, vgg_admin")]
         [HttpGet("ToggleActivateUser/{UserId}")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> ToggleActivateUser(long UserId)
@@ -183,6 +249,14 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a new user and assign he/she a role
+        /// (vgg_admin) for all companies
+        /// (CompanyAdmin, Recruiter, Interviewer) adds users to their company
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "CompanyAdmin, clientadmin, vgg_admin")]
         [HttpPost("Create")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> Create(CreateUserModel model)
@@ -206,6 +280,14 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Update an existing user and assign he/she a role
+        /// (vgg_admin) for all users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "CompanyAdmin, clientadmin, vgg_admin")]
         [HttpPost("Update")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> Update(UserModel model)
@@ -229,6 +311,14 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Add role to a specific user
+        /// (vgg_admin) for all users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "CompanyAdmin, clientadmin, vgg_admin")]
         [HttpPost("AddUserRole")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> AddUserRole(UserRoleModel model)
@@ -252,6 +342,14 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove role from a specific user
+        /// (vgg_admin) for all users in the database
+        /// (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "CompanyAdmin, clientadmin, vgg_admin")]
         [HttpPost("RemoveUserRole")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> RemoveUserRole(UserRoleModel model)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
+
 
 namespace Recode.Service
 {
@@ -20,7 +20,7 @@ namespace Recode.Service
         public string AccessFailedCount { get; set; }
         public string Id { get; set; }
         public string UserName { get; set; }
-        public List<Claim> Claims { get; set; }
+        public List<SSOClaim> Claims { get; set; }
     }
 
     public class SSOUser
@@ -50,7 +50,7 @@ namespace Recode.Service
         public string Id { get; set; }
         public string UserName { get; set; }
         public bool IsGoogleAuthenticatorEnabled { get; set; }
-        public List<Claim> Claims { get; set; }
+        public List<SSOClaim> Claims { get; set; }
     }
 
     public class SSOUserDto
@@ -71,7 +71,18 @@ namespace Recode.Service
         public string PhoneNumber { get; set; }
         public bool ConfirmEmail { get; set; }
         [Required]
-        public List<Claim> Claims { get; set; }
+        public List<SSOClaim> Claims { get; set; }
+    }
+
+    public class SSOClaim
+    {
+        public SSOClaim(string type, string value)
+        {
+            Type = type;
+            Value = value;
+        }
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 
     public class SSOUpdateUserDto
@@ -104,7 +115,7 @@ namespace Recode.Service
     public class UserClaimModel
     {
         public string UserId { get; set; }
-        public List<Claim> Claims { get; set; }
+        public List<SSOClaim> Claims { get; set; }
     }
 
     public enum ClaimAction
@@ -112,7 +123,7 @@ namespace Recode.Service
         Add,
         Remove
     }
-    //public class Claim
+    //public class SSOClaim
     //{
     //    [Required]
     //    public string Type { get; set; }
@@ -139,7 +150,7 @@ namespace Recode.Service
     {
         public bool EmailConfirmed { get; set; }
         public bool Exists { get; set; }
-        public List<Claim> Response { get; set; }
+        public List<SSOClaim> Response { get; set; }
         public string CustomValue { get; set; }
         public int TotalRecords { get; set; }
     }

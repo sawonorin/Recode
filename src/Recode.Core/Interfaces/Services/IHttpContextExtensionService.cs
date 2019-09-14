@@ -9,6 +9,6 @@ namespace Recode.Core.Interfaces.Services
     {
         string GetCurrentUserId();
         long GetCurrentCompanyId();
-        string GetSSORole();
+        string[] GetSSORole();
     }
 }

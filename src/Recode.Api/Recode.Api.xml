@@ -4,6 +4,168 @@
         <name>Recode.Api</name>
     </assembly>
     <members>
+        <member name="M:Recode.Api.Controllers.CompanyController.GetAll(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get All Companies
+            Filter by name and code
+            paginated request with pageNo and pageSize
+            </summary>
+            <param name="name"></param>
+            <param name="code"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.CompanyController.GetCompanysById(System.Int64)">
+            <summary>
+            Get Company by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.CompanyController.Create(Recode.Core.Models.CreateCompanyModel)">
+            <summary>
+            Create a new company
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.CompanyController.Update(Recode.Core.Models.CompanyModel)">
+            <summary>
+            Update an existing company 
+            Be sure to pass the company Id
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.OnboardController.Admin(Recode.Core.Models.OnboardUserModel)">
+            <summary>
+            Onboard a new vgg_admin. This endpoint should be called automatically from SSOUI.
+            In the event that the callback wasn't received, do it manually
+            Note that only one vgg_admin is expected to be on the platform
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.RolesController.Get">
+            <summary>
+            Get all roles on the application
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.GetAll(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get all users
+            (vgg_admin) gets users in the database
+            (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+            </summary>
+            <param name="email"></param>
+            <param name="firstName"></param>
+            <param name="lastName"></param>
+            <param name="userName"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.GetUsersByEmail(System.String)">
+            <summary>
+            Get users by email
+            (vgg_admin) gets users in the database
+            (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.GetUsersByIds(System.Int64[])">
+            <summary>
+            Get users by an array of Ids
+            (vgg_admin) gets users in the database
+            (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+            </summary>
+            <param name="UserIds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.GetUsersByRoleId(System.Int64)">
+            <summary>
+            Get users by roleId
+            (vgg_admin) gets users in the database
+            (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.GetUsersById(System.Int64)">
+            <summary>
+            Get user by Id
+            (vgg_admin) gets users in the database
+            (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.GetUsersBySSOUserId(System.String)">
+            <summary>
+            Get users by SSO Id
+            (vgg_admin) gets users in the database
+            (CompanyAdmin, Recruiter, Interviewer) gets users within their company
+            </summary>
+            <param name="ssoUserId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.ResendEmailConfirmation(System.Int64)">
+            <summary>
+            After User creation, if user does not receive confirmation email and EmailConfirmed = false
+            Admin can call this endpoint to resend email confirmation mail
+            </summary>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.ToggleActivateUser(System.Int64)">
+            <summary>
+            Toggle activate user.
+            If user is active, he/she becomes inactive and vice versa
+            (vgg_admin) for all users in the database
+            (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+            </summary>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.Create(Recode.Core.Models.CreateUserModel)">
+            <summary>
+            Create a new user and assign he/she a role
+            (vgg_admin) for all companies
+            (CompanyAdmin, Recruiter, Interviewer) adds users to their company
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.Update(Recode.Core.Models.UserModel)">
+            <summary>
+            Update an existing user and assign he/she a role
+            (vgg_admin) for all users in the database
+            (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.AddUserRole(Recode.Core.Models.UserRoleModel)">
+            <summary>
+            Add role to a specific user
+            (vgg_admin) for all users in the database
+            (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.UserController.RemoveUserRole(Recode.Core.Models.UserRoleModel)">
+            <summary>
+            Remove role from a specific user
+            (vgg_admin) for all users in the database
+            (CompanyAdmin, Recruiter, Interviewer) for only users within their company
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:Recode.Api.RequestModels.Model.Validate">
             <summary>
             Performs Validation

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recode.Core.Interfaces.Managers;
@@ -14,6 +15,7 @@ namespace Recode.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "vgg_admin")]
     public class CompanyController : BaseApiController
     {
         private readonly ICompanyService _companyService;
@@ -23,6 +25,16 @@ namespace Recode.Api.Controllers
             _companyService = companyService;
         }
 
+        /// <summary>
+        /// Get All Companies
+        /// Filter by name and code
+        /// paginated request with pageNo and pageSize
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="code"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNo"></param>
+        /// <returns></returns>
         [HttpGet("GetAll")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<CompanyModelPage>))]
         public async Task<IActionResult> GetAll(string name = "", string code = "", int pageSize = 10, int pageNo = 1)
@@ -43,6 +55,11 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Company by Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [HttpGet("GetCompanyById/{Id}")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<CompanyModel>))]
         public async Task<IActionResult> GetCompanysById(long Id)
@@ -63,6 +80,11 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a new company
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("Create")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<CompanyModel>))]
         public async Task<IActionResult> Create(CreateCompanyModel model)
@@ -86,6 +108,12 @@ namespace Recode.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Update an existing company 
+        /// Be sure to pass the company Id
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("Update")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<CompanyModel>))]
         public async Task<IActionResult> Update(CompanyModel model)

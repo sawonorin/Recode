@@ -18,6 +18,7 @@ namespace Recode.Core.Interfaces.Managers
         Task<ExecutionResponse<UserModel>> GetUser(long Id);
         Task<ExecutionResponse<UserModel[]>> GetUsersByRoleId(long roleId);
         Task<ExecutionResponse<UserModel>> ToggleActivateUser(long Id);
+        Task<ExecutionResponse<UserModel>> OnboardAdmin(OnboardUserModel model);
         Task<ExecutionResponse<UserModel>> CreateUser(CreateUserModel model);
         Task<ExecutionResponse<UserModel>> UpdateUser(UserModel model);
         Task<bool> ResendEmailConfirmation(long UserId);

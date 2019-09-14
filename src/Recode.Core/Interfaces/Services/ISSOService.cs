@@ -19,6 +19,6 @@ namespace Recode.Service.SSO
         Task<ExecutionResponse<object>> ChangePassword(SSOChangePasswordRequestModel model);
         Task<ExecutionResponse<object>> ResetPassword(SSOResetPasswordRequestModel model);
         Task<ExecutionResponse<object>> ConfirmUser(SSOConfirmUserModel model);
-        Task<ExecutionResponse<List<Claim>>> GetUserClaims(string ssoUserId);
+        Task<ExecutionResponse<List<SSOClaim>>> GetUserClaims(string ssoUserId);
     }
 }
