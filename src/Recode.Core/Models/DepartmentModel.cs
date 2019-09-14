@@ -6,26 +6,27 @@ using System.Text;
 
 namespace Recode.Core.Models
 {
-    //public class CompanyModel
+    //public class DepartmentModel
     //{
     //    public long Id { get; set; }
     //    public string Name { get; set; }
     //    public string Code { get; set; }
     //}
 
-    public class CompanyModelPage
+    public class DepartmentModelPage
     {
-        public CompanyModel[] Companys { get; set; }
+        public DepartmentModel[] Departments { get; set; }
         public int PageSize { get; set; }
         public int PageNo { get; set; }
     }
 
-    public class CompanyModel
+    public class DepartmentModel
     {
         public long Id { get; set; }
-        [Required]
+        public long CompanyId { get; set; }
+        [MaxLength(150)]
         public string Name { get; set; }
-        [MaxLength(15)]
-        public string Code { get; set; }
+        [MaxLength(250)]
+        public string Description { get; set; }
     }
 }

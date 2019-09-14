@@ -10,7 +10,7 @@ namespace Recode.Data.AppEntity
     public class Department : Entity<long>
     {
         public long CompanyId { get; set; }
-        [MaxLength(50)]
+        [MaxLength(150)]
         public string Name { get; set; }
         [MaxLength(250)]
         public string Description { get; set; }

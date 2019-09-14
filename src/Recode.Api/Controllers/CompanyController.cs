@@ -87,7 +87,7 @@ namespace Recode.Api.Controllers
         /// <returns></returns>
         [HttpPost("Create")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<CompanyModel>))]
-        public async Task<IActionResult> Create(CreateCompanyModel model)
+        public async Task<IActionResult> Create(CompanyModel model)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Recode.Api.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<CompanyModel>))]
         public async Task<IActionResult> Update(CompanyModel model)
         {

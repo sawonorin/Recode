@@ -290,10 +290,12 @@ namespace Recode.Service.EntityService
             };
         }
 
-        public async Task<ExecutionResponse<UserModelPage>> GetUsers(string email = "", string firstName = "", string lastName = "", string userName = "", int pageSize = 10, int pageNo = 1)
+        public async Task<ExecutionResponse<UserModelPage>> GetUsers(string email = "", string firstName = "", string lastName = "", string userName = "", long roleId = 0, int pageSize = 10, int pageNo = 1)
         {
-            var users = _userQueryRepo.GetAll();//.Where(x => x.CompanyId == _httpContext.GetCurrentCompanyId());
 
+            var users = roleId == 0 ? _userQueryRepo.GetAll().Select(x=> _mapper.Map<UserModel>(x)) :_userRoleQueryRepo.GetAll().Include(x => x.User).Where(x => x.RoleId == roleId)
+                            .Select(x => _mapper.Map<UserModel>(x.User));
+           
             users = CurrentCompanyId == 0 ? users : users.Where(x => x.CompanyId == CurrentCompanyId);
             users = string.IsNullOrEmpty(email) ? users : users.Where(x => x.Email.Contains(email));
             users = string.IsNullOrEmpty(firstName) ? users : users.Where(x => x.FirstName.Contains(firstName));
@@ -311,7 +313,7 @@ namespace Recode.Service.EntityService
                 {
                     PageSize = pageSize,
                     PageNo = pageNo,
-                    Users = _mapper.Map<UserModel[]>(users.ToList())
+                    Users = users.ToArray()
                 }
             };
         }

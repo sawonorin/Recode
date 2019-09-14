@@ -9,7 +9,7 @@ namespace Recode.Core.Interfaces.Managers
 {
     public interface IUserService
     {
-        Task<ExecutionResponse<UserModelPage>> GetUsers(string email = "", string firstName = "", string lastName = "", string userName = "", int pageSize = 10, int pageNo = 1);
+        Task<ExecutionResponse<UserModelPage>> GetUsers(string email = "", string firstName = "", string lastName = "", string userName = "", long roleId = 0, int pageSize = 10, int pageNo = 1);
         Task<ExecutionResponse<UserModel>> AddUserRole(UserRoleModel model);
         Task<ExecutionResponse<UserModel>> RemoveUserRole(UserRoleModel model);
         Task<ExecutionResponse<UserModel[]>> GetUsers(long[] userIds);

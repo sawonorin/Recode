@@ -23,7 +23,7 @@
             <param name="Id"></param>
             <returns></returns>
         </member>
-        <member name="M:Recode.Api.Controllers.CompanyController.Create(Recode.Core.Models.CreateCompanyModel)">
+        <member name="M:Recode.Api.Controllers.CompanyController.Create(Recode.Core.Models.CompanyModel)">
             <summary>
             Create a new company
             </summary>
@@ -34,6 +34,80 @@
             <summary>
             Update an existing company 
             Be sure to pass the company Id
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.DepartmentController.GetAll(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get All Departments within company
+            Filter by name
+            paginated request with pageNo and pageSize
+            </summary>
+            <param name="name"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.DepartmentController.GetDepartmentsById(System.Int64)">
+            <summary>
+            Get Department by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.DepartmentController.Create(Recode.Core.Models.DepartmentModel)">
+            <summary>
+            Create a new department
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.DepartmentController.Update(Recode.Core.Models.DepartmentModel)">
+            <summary>
+            Update an existing department 
+            Be sure to pass the department Id
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.DepartmentController.Delete(System.Int64)">
+            <summary>
+            Delete an existing department by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.JobRoleController.GetAll(System.String,System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Get All Job Roles within company
+            Filter by name and departmentId
+            paginated request with pageNo and pageSize
+            </summary>
+            <param name="name"></param>
+            <param name="departmentId"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.JobRoleController.GetJobRolesById(System.Int64)">
+            <summary>
+            Get JobRole by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.JobRoleController.Create(Recode.Core.Models.JobRoleModel)">
+            <summary>
+            Create a new jobRole
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.JobRoleController.Update(Recode.Core.Models.UpdateJobRoleModel)">
+            <summary>
+            Update an existing jobRole 
+            Be sure to pass the jobRole Id
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -53,7 +127,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Recode.Api.Controllers.UserController.GetAll(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+        <member name="M:Recode.Api.Controllers.UserController.GetAll(System.String,System.String,System.String,System.String,System.Int64,System.Int32,System.Int32)">
             <summary>
             Get all users
             (vgg_admin) gets users in the database

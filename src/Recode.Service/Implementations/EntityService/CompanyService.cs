@@ -36,7 +36,7 @@ namespace Recode.Service.EntityService
             _httpContext = httpContext;
         }
 
-        public async Task<ExecutionResponse<CompanyModel>> CreateCompany(CreateCompanyModel model)
+        public async Task<ExecutionResponse<CompanyModel>> CreateCompany(CompanyModel model)
         {
             var oldCompany = _companyQueryRepo.GetAll().FirstOrDefault(x => x.Name.Trim().ToLower() == model.Name.Trim().ToLower());
 

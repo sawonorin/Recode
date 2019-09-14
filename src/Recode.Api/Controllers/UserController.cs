@@ -39,11 +39,11 @@ namespace Recode.Api.Controllers
         /// <returns></returns>
         [HttpGet("GetAll")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModelPage>))]
-        public async Task<IActionResult> GetAll(string email = "", string firstName = "", string lastName = "", string userName = "", int pageSize = 10, int pageNo = 1)
+        public async Task<IActionResult> GetAll(string email = "", string firstName = "", string lastName = "", string userName = "", long roleId = 0, int pageSize = 10, int pageNo = 1)
         {
             try
             {
-                var response = await _userService.GetUsers(email: email, firstName: firstName, lastName: lastName, userName: userName, pageSize: pageSize, pageNo: pageNo);
+                var response = await _userService.GetUsers(email: email, firstName: firstName, lastName: lastName, userName: userName, roleId: roleId, pageSize: pageSize, pageNo: pageNo);
                 if (response.ResponseCode != ResponseCode.Ok)
                 {
                     return Ok(WebApiResponses<UserModelPage>.ErrorOccured(response.Message));
@@ -288,7 +288,7 @@ namespace Recode.Api.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [Authorize(Roles = "CompanyAdmin, clientadmin, vgg_admin")]
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         [ProducesDefaultResponseType(typeof(APIResponseModel<UserModel>))]
         public async Task<IActionResult> Update(UserModel model)
         {

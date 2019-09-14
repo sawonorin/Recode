@@ -55,6 +55,8 @@ namespace Recode.Api.Extensions
             services.AddScoped<ISSOService, SSOService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IJobRoleService, JobRoleService>();
 
             // Managers
             services.AddScoped<IAuthService, AuthService>();
