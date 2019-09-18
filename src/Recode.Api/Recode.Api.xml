@@ -97,7 +97,7 @@
             <param name="Id"></param>
             <returns></returns>
         </member>
-        <member name="M:Recode.Api.Controllers.JobRoleController.Create(Recode.Core.Models.JobRoleModel)">
+        <member name="M:Recode.Api.Controllers.JobRoleController.Create(Recode.Core.Models.UpdateJobRoleModel)">
             <summary>
             Create a new jobRole
             </summary>
@@ -110,6 +110,46 @@
             Be sure to pass the jobRole Id
             </summary>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.MetricController.GetAll(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get All Metrics within company
+            Filter by name
+            paginated request with pageNo and pageSize
+            </summary>
+            <param name="name"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.MetricController.GetMetricsById(System.Int64)">
+            <summary>
+            Get Metric by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.MetricController.Create(Recode.Core.Models.MetricModel)">
+            <summary>
+            Create a new metric
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.MetricController.Update(Recode.Core.Models.MetricModel)">
+            <summary>
+            Update an existing metric 
+            Be sure to pass the metric Id
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.MetricController.Delete(System.Int64)">
+            <summary>
+            Delete an existing metric by Id
+            </summary>
+            <param name="Id"></param>
             <returns></returns>
         </member>
         <member name="M:Recode.Api.Controllers.OnboardController.Admin(Recode.Core.Models.OnboardUserModel)">
@@ -238,6 +278,54 @@
             (CompanyAdmin, Recruiter, Interviewer) for only users within their company
             </summary>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.VenueController.GetAll(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get All Venues within company
+            Filter by name
+            paginated request with pageNo and pageSize
+            </summary>
+            <param name="name"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.VenueController.GetAvailableVenues(System.DateTime,System.DateTime)">
+            <summary>
+            Get available venues by startDate and endDate
+            </summary>
+            <param name="startDate"></param>
+            <param name="endDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.VenueController.GetVenuesById(System.Int64)">
+            <summary>
+            Get Venue by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.VenueController.Create(Recode.Core.Models.VenueModel)">
+            <summary>
+            Create a new venue
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.VenueController.Update(Recode.Core.Models.VenueModel)">
+            <summary>
+            Update an existing venue 
+            Be sure to pass the venue Id
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.VenueController.Delete(System.Int64)">
+            <summary>
+            Delete an existing venue by Id
+            </summary>
+            <param name="Id"></param>
             <returns></returns>
         </member>
         <member name="M:Recode.Api.RequestModels.Model.Validate">

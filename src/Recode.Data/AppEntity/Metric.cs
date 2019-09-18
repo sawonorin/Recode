@@ -10,8 +10,9 @@ namespace Recode.Data.AppEntity
     public class Metric : Entity<long>
     {
         public long? DepartmentId { get; set; }
+        public Department Department { get; set; }
         public long CompanyId { get; set; }
-        [MaxLength(50)]
+        [MaxLength(150)]
         public string Name { get; set; }
         [MaxLength(250)]
         public string Description { get; set; }

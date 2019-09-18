@@ -7,8 +7,9 @@ namespace Recode.Core.Interfaces.Services
 {
     public interface IHttpContextExtensionService
     {
-        string GetCurrentUserId();
+        string GetCurrentSSOUserId();
         long GetCurrentCompanyId();
+        long GetCurrentUserId();
         string[] GetSSORole();
     }
 }

@@ -66,7 +66,7 @@ namespace Recode.Service.EntityService
                 Name = model.Name,
                 DepartmentId = model.DepartmentId,
                 Description = model.Description,
-                CreateById = _httpContext.GetCurrentUserId()
+                CreateById = _httpContext.GetCurrentSSOUserId()
             };
 
             await _jobRoleCommandRepo.InsertAsync(jobRole);

@@ -88,7 +88,7 @@ namespace Recode.Core.Managers
 
         public async Task<bool> ChangePassword(string currentPassword, string newPassword)
         {
-            var result = await _ssoService.ChangePassword(new SSOChangePasswordRequestModel { UserId = _httpContextService.GetCurrentUserId(), CurrentPassword = currentPassword, NewPassword = newPassword });
+            var result = await _ssoService.ChangePassword(new SSOChangePasswordRequestModel { UserId = _httpContextService.GetCurrentSSOUserId(), CurrentPassword = currentPassword, NewPassword = newPassword });
             if (result.ResponseCode != ResponseCode.Ok)
             {
                 throw new BadRequestException("Change password request failed");

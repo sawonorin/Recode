@@ -22,6 +22,7 @@ using Recode.Repository.CoreRepositories;
 using Recode.Service.EntityService;
 using Recode.Service.SSO;
 using Recode.Service.Implementations.Repositories;
+using Amazon.S3;
 
 namespace Recode.Api.Extensions
 {
@@ -57,6 +58,10 @@ namespace Recode.Api.Extensions
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IJobRoleService, JobRoleService>();
+            services.AddScoped<IVenueService, VenueService>();
+            services.AddScoped<ICandidateService, CandidateService>();
+            services.AddScoped<IMetricService, MetricService>();
+            services.AddScoped<IInterviewSessionService, InterviewSessionService>();
 
             // Managers
             services.AddScoped<IAuthService, AuthService>();
@@ -105,6 +110,14 @@ namespace Recode.Api.Extensions
                   });
             });
 
+        }
+
+        public static void AddAWSServices(IServiceCollection services, IConfiguration Configuration)
+        {
+            services.Configure<AWSSettings>(Configuration.GetSection(nameof(AWSSettings)));
+
+            var awsOption = Configuration.GetAWSOptions();
+            services.AddAWSService<IAmazonS3>(awsOption);
         }
     }
 }

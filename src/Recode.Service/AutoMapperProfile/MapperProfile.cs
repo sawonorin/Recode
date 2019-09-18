@@ -16,12 +16,17 @@ namespace Recode.Service.AutoMapperProfile
             {
                 if(src.UserRoles != null)
                 {
-                   // dest.Roles = src.UserRoles.Select(x => new RoleModel { Id = x.Role.Id, RoleName = x.Role.RoleName, Description = x.Role.Description }).ToArray();
+                    dest.Roles = src.UserRoles.Select(x => new RoleModel { Id = x.Role.Id, RoleName = x.Role.RoleName, Description = x.Role.Description }).ToArray();
                 }
             });
-            
+
+            CreateMap<Candidate, CandidateModel>().BeforeMap((src, dest) =>
+            {
+                dest.DepartmentName = src.JobRole?.Department?.Name;
+                dest.JobRoleName = src.JobRole?.Name;
+            });
+
             CreateMap<EmailLog, EmailLogModel>().ReverseMap();
-            CreateMap<Company, BusinessModel>(MemberList.Source).ReverseMap();
         }
     }
 }

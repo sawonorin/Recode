@@ -33,7 +33,7 @@ namespace Recode.Api.Middlewares
                 {
                     // get sub
                     IHttpContextExtensionService httpExtSrv = (IHttpContextExtensionService)serviceProvider.GetService(typeof(IHttpContextExtensionService));
-                    string userId = httpExtSrv.GetCurrentUserId();
+                    string userId = httpExtSrv.GetCurrentSSOUserId();
                     if (string.IsNullOrEmpty(userId))
                     {
                         throw new SecurityTokenValidationException();

@@ -64,7 +64,7 @@ namespace Recode.Service.EntityService
             _userRoleQueryRepo = userRoleQueryRepo;
             _httpContext = httpContext;
 
-            CurrentUserId = _httpContext.GetCurrentUserId();
+            CurrentUserId = _httpContext.GetCurrentSSOUserId();
         }
 
         public async Task<ExecutionResponse<UserModel>> AddUserRole(UserRoleModel model)

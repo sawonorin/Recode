@@ -12,14 +12,13 @@ namespace Recode.Data.AppEntity
     {
         public Candidate()
         {
-            Status = CandidateStatus.Ongoing;
+            Status = CandidateStatus.Ongoing.ToString();
+            InterviewStage = 0;
         }
 
         public long CompanyId { get; set; }
-        public long? JobRoleId { get; set; }
+        public long JobRoleId { get; set; }
         public JobRole JobRole { get; set; }
-        public long DepartmentId { get; set; }
-        public Department Department { get; set; }
         [MaxLength(50)]
         public string FirstName { get; set; }
         [MaxLength(50)]
@@ -29,6 +28,7 @@ namespace Recode.Data.AppEntity
         [MaxLength(100)]
         public string Email { get; set; }
         public int InterviewStage { get; set; }
-        public CandidateStatus Status { get; set; }
+        public string Status { get; set; }
+        public string ResumeUrl { get; set; }
     }
 }

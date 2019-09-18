@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Recode.Data;
 
 namespace Recode.Data.Migrations
 {
     [DbContext(typeof(APPContext))]
-    partial class APPContextModelSnapshot : ModelSnapshot
+    [Migration("20190916200238_AddColumnLengthAndRelationship")]
+    partial class AddColumnLengthAndRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +34,8 @@ namespace Recode.Data.Migrations
 
                     b.Property<DateTimeOffset>("DateCreated");
 
+                    b.Property<long>("DepartmentId");
+
                     b.Property<string>("Email")
                         .HasMaxLength(100);
 
@@ -44,7 +48,7 @@ namespace Recode.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<long>("JobRoleId");
+                    b.Property<long?>("JobRoleId");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(50);
@@ -52,13 +56,13 @@ namespace Recode.Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(50);
 
-                    b.Property<string>("ResumeUrl");
-
-                    b.Property<string>("Status");
+                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("JobRoleId");
 
@@ -423,7 +427,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 1L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 17, 6, 43, 26, 495, DateTimeKind.Unspecified).AddTicks(7038), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 16, 21, 2, 37, 973, DateTimeKind.Unspecified).AddTicks(2378), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "VGG_Admin",
@@ -433,7 +437,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 2L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 17, 6, 43, 26, 495, DateTimeKind.Unspecified).AddTicks(9235), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 16, 21, 2, 37, 973, DateTimeKind.Unspecified).AddTicks(4574), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "CompanyAdmin",
@@ -443,7 +447,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 3L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 17, 6, 43, 26, 495, DateTimeKind.Unspecified).AddTicks(9251), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 16, 21, 2, 37, 973, DateTimeKind.Unspecified).AddTicks(4591), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "Interviewer",
@@ -453,7 +457,7 @@ namespace Recode.Data.Migrations
                         {
                             Id = 4L,
                             CreateById = "seed",
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 17, 6, 43, 26, 495, DateTimeKind.Unspecified).AddTicks(9253), new TimeSpan(0, 1, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 9, 16, 21, 2, 37, 973, DateTimeKind.Unspecified).AddTicks(4593), new TimeSpan(0, 1, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
                             RoleName = "Recruiter",
@@ -569,10 +573,14 @@ namespace Recode.Data.Migrations
 
             modelBuilder.Entity("Recode.Data.AppEntity.Candidate", b =>
                 {
+                    b.HasOne("Recode.Data.AppEntity.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Recode.Data.AppEntity.JobRole", "JobRole")
                         .WithMany("Candidates")
-                        .HasForeignKey("JobRoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("JobRoleId");
                 });
 
             modelBuilder.Entity("Recode.Data.AppEntity.InterviewSession", b =>

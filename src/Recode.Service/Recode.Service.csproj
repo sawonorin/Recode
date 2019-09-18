@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.2" />
     <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.104.26" />
     <PackageReference Include="Hangfire" Version="1.7.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />

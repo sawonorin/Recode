@@ -28,7 +28,18 @@ namespace Recode.Service.Implementations.Services
             return default(long);
         }
 
-        public string GetCurrentUserId()
+        public long GetCurrentUserId()
+        {
+            var sub = _httpAccessor.HttpContext.User.Claims
+               .FirstOrDefault(x => x.Type == "userId");
+            if (sub != null)
+            {
+                return long.Parse(sub.Value);
+            }
+            return default(long);
+        }
+
+        public string GetCurrentSSOUserId()
         {
             var sub = _httpAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);

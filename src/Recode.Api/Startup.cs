@@ -1,46 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+﻿using System.IO;
 using AutoMapper;
 using Hangfire;
-using Hangfire.SqlServer;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using StackifyLib;
 using StackifyLib.CoreLogger;
-using Swashbuckle.AspNetCore.Swagger;
-using Recode.Core.ConfigModels;
 using Recode.Core.Interfaces.Services;
 using Recode.Api.Extensions;
 using Recode.Api.Filters;
 using Recode.Api.HangfireSettingHelper;
 using Recode.Api.Middlewares;
-using Recode.Data;
-using Recode.Repository.MongoDBRepo;
 using Recode.Service.AspNetCoreHelper;
-using Recode.Service.AuditHelper;
+using Recode.Service.AutoMapperProfile;
 
 namespace Recode.Api
 {
@@ -88,7 +70,7 @@ namespace Recode.Api
                 options.SuppressModelStateInvalidFilter = true;
             });
             services.AddCors();
-            services.AddAutoMapper();
+            services.AddAutoMapper(config => config.AddProfile<MapperProfile>());
             services.AddHttpClient();
             services.AddDatabaseServices(Configuration);
             services.AddSecurityServices(Configuration);

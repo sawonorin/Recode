@@ -11,11 +11,12 @@ namespace Recode.Data.AppEntity
     {
         public long CompanyId { get; set; }
         public long JobRoleId { get; set; }
+        public string Subject { get; set; }
         public JobRole JobRole { get; set; }
         public long RecruiterId { get; set; }
         [ForeignKey("RecruiterId")]
         public User Recruiter { get; set; }
-        public InterviewSessionStatus Status { get; set; }
+        public string Status { get; set; }
         public long? VenueId { get; set; }
         public Venue Venue { get; set; }
         public DateTime StartTime { get; set; }

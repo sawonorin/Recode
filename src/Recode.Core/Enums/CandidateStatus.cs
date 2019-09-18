@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Recode.Data.Enums
+namespace Recode.Core.Enums
 {
     public enum CandidateStatus
     {
