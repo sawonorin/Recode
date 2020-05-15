@@ -28,4 +28,8 @@
     <PackageReference Include="StackifyLib" Version="2.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Recode.Core\Recode.Core.csproj" />
+  </ItemGroup>
+
 </Project>
