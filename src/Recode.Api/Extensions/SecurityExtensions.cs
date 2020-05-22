@@ -34,8 +34,6 @@ namespace Recode.Api.Extensions
                     ValidAudiences = new[]
                     {
                         $"{opts.Authority}/resources"
-                        //,
-                        //"ebipsgatewayapi"
                     }
                 };
                 opts.IncludeErrorDetails = true;

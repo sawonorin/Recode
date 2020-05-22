@@ -146,7 +146,7 @@ namespace Recode.Api
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "RECODE API");
-                // c.RoutePrefix = "swagger/ui";
+                c.RoutePrefix = string.Empty;
             });
             app.UseMvc();
             app.UseAuthentication();

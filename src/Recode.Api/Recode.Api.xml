@@ -4,6 +4,46 @@
         <name>Recode.Api</name>
     </assembly>
     <members>
+        <member name="M:Recode.Api.Controllers.CandidateController.GetAll(System.String,System.String,System.String,System.Int64,System.Int32,System.Int32)">
+            <summary>
+            Get All Candidates within company
+            Filter by name
+            paginated request with pageNo and pageSize
+            </summary>
+            <param name="name"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.CandidateController.GetCandidatesById(System.Int64)">
+            <summary>
+            Get Candidate by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.CandidateController.Create(Microsoft.AspNetCore.Http.IFormFile,Recode.Core.Models.UpdateCandidateModel)">
+            <summary>
+            Create a new candidate
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.CandidateController.Update(Microsoft.AspNetCore.Http.IFormFile,Recode.Core.Models.CandidateModel)">
+            <summary>
+            Update an existing candidate 
+            Be sure to pass the candidate Id
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.CandidateController.Delete(System.Int64)">
+            <summary>
+            Delete an existing candidate by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
         <member name="M:Recode.Api.Controllers.CompanyController.GetAll(System.String,System.String,System.Int32,System.Int32)">
             <summary>
             Get All Companies
@@ -76,6 +116,60 @@
             Delete an existing department by Id
             </summary>
             <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.InterviewSessionController.GetAll(System.String,System.Int64,System.Int64,System.Int64,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get All InterviewSessions within company
+            Filter by name
+            paginated request with pageNo and pageSize
+            </summary>
+            <param name="name"></param>
+            <param name="pageSize"></param>
+            <param name="pageNo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.InterviewSessionController.SetInterviewCandidates(Recode.Core.Models.InterviewSessionVariable)">
+            <summary>
+            Set Interview Candidates
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.InterviewSessionController.SetInterviewMetrics(Recode.Core.Models.InterviewSessionVariable)">
+            <summary>
+            Set Interview Metrics
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.InterviewSessionController.SetInterviewInterviewers(Recode.Core.Models.InterviewSessionVariable)">
+            <summary>
+            Set Interview Interviwers
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.InterviewSessionController.GetInterviewSessionsById(System.Int64)">
+            <summary>
+            Get InterviewSession by Id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.InterviewSessionController.Create(Recode.Core.Models.InterviewSessionModel)">
+            <summary>
+            Create a new interviewSession
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Recode.Api.Controllers.InterviewSessionController.Update(Recode.Core.Models.InterviewSessionModel)">
+            <summary>
+            Update an existing interviewSession 
+            Be sure to pass the interviewSession Id
+            </summary>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:Recode.Api.Controllers.JobRoleController.GetAll(System.String,System.Int64,System.Int32,System.Int32)">

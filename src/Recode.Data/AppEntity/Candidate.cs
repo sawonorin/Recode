@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Recode.Data.EntityBase;
-using Recode.Data.Enums;
+using Recode.Core.Enums;
 
 namespace Recode.Data.AppEntity
 {

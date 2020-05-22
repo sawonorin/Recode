@@ -25,7 +25,7 @@ namespace Recode.Api.Filters
             response.StatusCode = (int)content.Item2;
             response.ContentType = "application/json";
 
-            context.Result = new JsonResult(content.Item1);
+            context.Result = new JsonResult(content.responseModel);
         }
 
         public static (ResponseModel<T> responseModel, HttpStatusCode statusCode) GetStatusCode<T>(Exception exception)
